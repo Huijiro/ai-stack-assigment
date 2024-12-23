@@ -2,9 +2,11 @@ import { BACKEND_URL } from "@/app/lib/constants";
 import { verifyAuthToken } from "@/app/lib/dal";
 import { NextResponse } from "next/server";
 
-export type KnowledgeBase = {};
+export type KnowledgeBase = {
+  knowledge_base_id: string;
+};
 
-export async function GET(_req: Request) {
+export async function GET() {
   const authToken = await verifyAuthToken();
 
   const URL = `${BACKEND_URL}/knowledge_bases`;

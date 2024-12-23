@@ -55,7 +55,7 @@ export async function createSession(email: string, password: string) {
   });
 }
 
-export async function login(state: LoginFormState, formData: FormData) {
+export async function login(_state: LoginFormState, formData: FormData) {
   const validatedFields = LoginFormSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -73,6 +73,7 @@ export async function login(state: LoginFormState, formData: FormData) {
       validatedFields.data.password,
     );
   } catch (error) {
+    console.error(error);
     return {
       message: "Failed to login",
     };

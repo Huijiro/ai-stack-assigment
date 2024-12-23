@@ -22,7 +22,7 @@ const formSchema = z.object({
 
 // WARN: The second form is need for NextJS server actions
 export default function LoginForm() {
-  const [_state, action, isPending] = useActionState(login, undefined);
+  const [, action, isPending] = useActionState(login, undefined);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

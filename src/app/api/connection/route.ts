@@ -10,7 +10,7 @@ export type Connection = {
   connection_provider: "gdrive" | "external";
 };
 
-export async function GET(_req: Request) {
+export async function GET() {
   const authToken = await verifyAuthToken();
 
   const URL = `${BACKEND_URL}/connections`;

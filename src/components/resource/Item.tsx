@@ -1,3 +1,4 @@
+"use client";
 import { Resource } from "@/app/api/connection/[connectionId]/resources/route";
 import Directory from "./Directory";
 import File from "./File";
@@ -19,7 +20,7 @@ export default function Item({ resource, blocked }: Props) {
       removeFile(resource.resource_id);
       setSelected(false);
     }
-  }, [blocked]);
+  }, [selected, removeFile, resource.resource_id]);
 
   return (
     <div className="flex gap-2">

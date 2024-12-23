@@ -9,7 +9,7 @@ import ItemList from "./ItemList";
 
 export default function RootResource() {
   const params = useParams();
-  const { data, isLoading, error } = useSWR<Resource[]>(
+  const { data } = useSWR<Resource[]>(
     `/api/connection/${params.id}/resources/children`,
     fetcher,
   );
