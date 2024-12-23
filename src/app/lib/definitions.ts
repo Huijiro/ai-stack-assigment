@@ -14,3 +14,18 @@ export type LoginFormState =
       message?: string;
     }
   | undefined;
+
+export const CreateKnowledgeBaseSchema = z.object({
+  name: z.string().email(),
+  description: z.string(),
+});
+
+export type CreateKnowledgeBaseState =
+  | {
+      errors?: {
+        name?: string[];
+        description?: string[];
+      };
+      message?: string;
+    }
+  | undefined;

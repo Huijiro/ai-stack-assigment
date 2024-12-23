@@ -1,25 +1,21 @@
 "use client";
+import KnowledgeBaseSelector from "@/components/knowledgebases/KnowledgeBaseSelector";
 import Root from "@/components/resource/Root";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useIndexStore } from "@/context/IndexContext";
+import { useParams } from "next/navigation";
 
 export default function Page() {
-  const { IDs } = useIndexStore();
+  const params = useParams<{
+    id: string;
+  }>();
   return (
     <main className="h-screen flex py-10 justify-center">
       <div className="flex flex-col gap-4 h-full p-8">
         <ScrollArea className="h-3/4">
-          <Root />
+          <Root type="connection" id={params.id} />
         </ScrollArea>
-        <Button
-          onClick={() => {
-            console.log(IDs);
-          }}
-        >
-          Index
-        </Button>
       </div>
+      <KnowledgeBaseSelector />
     </main>
   );
 }

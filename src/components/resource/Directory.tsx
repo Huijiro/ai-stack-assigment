@@ -1,7 +1,6 @@
 "use client";
 import { Resource } from "@/app/api/connection/[connectionId]/resources/route";
 import { fetcher } from "@/app/lib/swr";
-import { useParams } from "next/navigation";
 import { useState } from "react";
 import useSWR from "swr";
 import Item from "./Item";
@@ -11,21 +10,25 @@ import ItemList from "./ItemList";
 type Props = {
   resource: Resource;
   blocked?: boolean;
+  type: "connection" | "knowledge_bases";
+  id: string;
 };
 
-export default function Directory({ resource, blocked }: Props) {
-  const params = useParams();
+export default function Directory({ resource, blocked, type, id }: Props) {
   const [open, setOpen] = useState(false);
-  const { data, isLoading } = useSWR<Resource[]>(
-    open
-      ? `/api/connection/${params.id}/resources/children?resource_id=${resource.resource_id}`
-      : null,
-    fetcher,
-    {
-      keepPreviousData: true,
-      revalidateOnFocus: false,
-    },
-  );
+
+  let URL = `/api/${type}/${id}/resources/children`;
+
+  if (type === "knowledge_bases") {
+    URL += `?resource_path=${resource.inode_path.path}`;
+  } else {
+    URL += `?resource_id=${resource.resource_id}`;
+  }
+
+  const { data, isLoading } = useSWR<Resource[]>(open ? URL : null, fetcher, {
+    keepPreviousData: true,
+    revalidateOnFocus: false,
+  });
 
   const { inode_path } = resource;
   const displayName = inode_path.path.split("/").pop();
@@ -44,11 +47,13 @@ export default function Directory({ resource, blocked }: Props) {
       </div>
       {open && (
         <ItemList>
-          {data?.map((resource) => (
+          {data?.map((resource, index) => (
             <Item
-              key={resource.resource_id}
+              key={index}
               resource={resource}
               blocked={blocked}
+              type={type}
+              id={id}
             />
           ))}
         </ItemList>
