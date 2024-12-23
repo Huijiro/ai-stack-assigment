@@ -1,26 +1,25 @@
 "use client";
-import { Resource } from "@/app/api/resource/route";
-import { fetcher } from "@/app/lib/swr";
-import { useParams } from "next/navigation";
-import useSWR from "swr";
+import Root from "@/components/resource/Root";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useIndexStore } from "@/context/IndexContext";
 
 export default function Page() {
-  const params = useParams();
-  const { data, isLoading, error } = useSWR<Resource[]>(
-    `/api/resource?connection_id=${params.id}`,
-    fetcher,
-  );
-  if (error) {
-    return <div>failed to load</div>;
-  }
-  if (isLoading) {
-    return <div>loading...</div>;
-  }
+  const { IDs } = useIndexStore();
   return (
-    <div>
-      {data?.map((resource) => (
-        <div key={resource.resource_id}>{resource.inode_path.path}</div>
-      ))}
-    </div>
+    <main className="h-screen flex py-10 justify-center">
+      <div className="flex flex-col gap-4 h-full p-8">
+        <ScrollArea className="h-3/4">
+          <Root />
+        </ScrollArea>
+        <Button
+          onClick={() => {
+            console.log(IDs);
+          }}
+        >
+          Index
+        </Button>
+      </div>
+    </main>
   );
 }

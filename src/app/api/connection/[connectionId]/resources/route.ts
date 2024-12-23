@@ -10,17 +10,18 @@ export type Resource = {
   };
 };
 
-export async function GET(req: NextRequest) {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   const authToken = await verifyAuthToken();
-
-  const searchParams = req.nextUrl.searchParams;
-  const connectionId = searchParams.get("connection_id");
+  const connectionId = (await params).id;
 
   if (!connectionId) {
     return NextResponse.json({ error: "No connection id provided" });
   }
 
-  const URL = `${BACKEND_URL}/connections/${connectionId}/resources/children`;
+  const URL = `${BACKEND_URL}/connections/${connectionId}/resources`;
 
   const response = await fetch(URL, {
     headers: {

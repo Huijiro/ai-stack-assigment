@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { fetcher } from "./lib/swr";
 import { Connection } from "./api/connection/route";
 import { ConnectionSelector } from "@/components/ConnectionSelector";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
   const { data, isLoading, error } = useSWR<Connection[]>(
@@ -16,16 +17,25 @@ export default function Home() {
   }
 
   if (isLoading) {
-    return <div>loading...</div>;
-  }
-
-  if (!data) {
-    return <div>no data</div>;
+    return (
+      <main className="h-screen flex items-center justify-center">
+        <Skeleton className="h-[225px] w-[350px] rounded-xl" />
+      </main>
+    );
   }
 
   return (
-    <div>
-      <ConnectionSelector connections={data} />
-    </div>
+    <main className="h-screen flex items-center justify-center">
+      <div className="flex flex-col gap-4 p-8">
+        {data ? (
+          <>
+            <h1 className="text-3xl font-bold">AI Stack Connections</h1>
+            <ConnectionSelector connections={data} />
+          </>
+        ) : (
+          <span>No connections found</span>
+        )}
+      </div>
+    </main>
   );
 }

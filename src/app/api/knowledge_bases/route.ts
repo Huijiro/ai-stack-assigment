@@ -2,18 +2,12 @@ import { BACKEND_URL } from "@/app/lib/constants";
 import { verifyAuthToken } from "@/app/lib/dal";
 import { NextResponse } from "next/server";
 
-export type Connection = {
-  connection_id: string;
-  name: string;
-  created_at: string;
-  updated_at: string;
-  connection_provider: "gdrive" | "external";
-};
+export type KnowledgeBase = {};
 
 export async function GET(_req: Request) {
   const authToken = await verifyAuthToken();
 
-  const URL = `${BACKEND_URL}/connections`;
+  const URL = `${BACKEND_URL}/knowledge_bases`;
   const params = new URLSearchParams({
     connection_provider: "gdrive",
     limit: "1",
@@ -30,7 +24,7 @@ export async function GET(_req: Request) {
     return NextResponse.json({ error: response.statusText });
   }
 
-  const data = (await response.json()) as Connection[];
+  const data = (await response.json()) as KnowledgeBase;
 
   return NextResponse.json(data);
 }
