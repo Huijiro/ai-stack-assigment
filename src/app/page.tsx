@@ -5,6 +5,7 @@ import { fetcher } from "./lib/swr";
 import { Connection } from "./api/connection/route";
 import { ConnectionSelector } from "@/components/ConnectionSelector";
 import { Skeleton } from "@/components/ui/skeleton";
+import { redirect } from "next/navigation";
 
 export default function Home() {
   const { data, isLoading, error } = useSWR<Connection[]>(
@@ -13,7 +14,7 @@ export default function Home() {
   );
 
   if (error) {
-    return <div>failed to load</div>;
+    redirect("/login");
   }
 
   if (isLoading) {

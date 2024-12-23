@@ -18,7 +18,9 @@ export function ConnectionSelector({ connections }: Props) {
           <Button variant="outline" size="icon" className="h-24 w-24">
             <span className="sr-only">Open {connection.name}</span>
             <Image
-              className="dark:invert"
+              width={24}
+              height={24}
+              className="dark:invert h-24 w-24"
               src={`/icons/${connection.connection_provider}.svg`}
               alt={`Icon for ${connection.name}`}
             />

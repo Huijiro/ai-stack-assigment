@@ -1,3 +1,4 @@
+"use client";
 import { fetcher } from "@/app/lib/swr";
 import { useKBStore } from "@/context/KBContext";
 import useSWR from "swr";
@@ -6,6 +7,7 @@ import { RefreshCw } from "lucide-react";
 import RootResource from "../resource/Root";
 import { KnowledgeBase } from "@/app/api/knowledge_bases/[id]/resources/children/route";
 import { useState } from "react";
+import { Skeleton } from "../ui/skeleton";
 
 export default function KnowledgeBaseInfo() {
   const { knowledge_base_id } = useKBStore();
@@ -18,12 +20,30 @@ export default function KnowledgeBaseInfo() {
   );
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex gap-4 justify-between">
+          <div className="flex flex-col gap-4">
+            <h1 className="text-2xl font-bold">
+              <Skeleton className="h-7 w-full min-w-48" />
+            </h1>
+            <h2 className="text-xl font-bold min-w-24">
+              <Skeleton className="h-4 w-full opacity-50" />
+            </h2>
+          </div>
+          <Button disabled={true}>
+            {" "}
+            <RefreshCw /> Sync
+          </Button>
+        </div>
+        <Skeleton className="h-7 w-full" />
+      </div>
+    );
   }
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex gap-4">
+      <div className="flex gap-4 justify-between">
         <div className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold">
             {data?.name ?? "No name provided"}

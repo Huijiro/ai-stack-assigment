@@ -35,19 +35,21 @@ export default function Item({ resource, blocked, type, id }: Props) {
 
   return (
     <div className="flex gap-2">
-      <Checkbox
-        checked={blocked || selected}
-        disabled={blocked}
-        onCheckedChange={(check) => {
-          if (check) {
-            addFile(resource.resource_id);
-            setSelected(true);
-          } else {
-            removeFile(resource.resource_id);
-            setSelected(false);
-          }
-        }}
-      />
+      {type === "connection" && (
+        <Checkbox
+          checked={blocked || selected}
+          disabled={blocked}
+          onCheckedChange={(check) => {
+            if (check) {
+              addFile(resource.resource_id);
+              setSelected(true);
+            } else {
+              removeFile(resource.resource_id);
+              setSelected(false);
+            }
+          }}
+        />
+      )}
       {resource.inode_type === "directory" ? (
         <Directory
           resource={resource}

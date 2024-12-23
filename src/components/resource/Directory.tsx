@@ -6,6 +6,7 @@ import useSWR from "swr";
 import Item from "./Item";
 import { Folder } from "lucide-react";
 import ItemList from "./ItemList";
+import { sortResource } from "@/lib/utils";
 
 type Props = {
   resource: Resource;
@@ -45,17 +46,19 @@ export default function Directory({ resource, blocked, type, id }: Props) {
       >
         <Folder /> <span className="font-bold">{displayName}</span>
       </div>
-      {open && (
-        <ItemList>
-          {data?.map((resource, index) => (
-            <Item
-              key={index}
-              resource={resource}
-              blocked={blocked}
-              type={type}
-              id={id}
-            />
-          ))}
+      {open && !isLoading && (
+        <ItemList type={type}>
+          {data
+            ?.sort(sortResource)
+            .map((resource, index) => (
+              <Item
+                key={index}
+                resource={resource}
+                blocked={blocked}
+                type={type}
+                id={id}
+              />
+            ))}
         </ItemList>
       )}
     </div>

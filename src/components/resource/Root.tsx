@@ -5,6 +5,8 @@ import useSWR from "swr/immutable";
 import Item from "./Item";
 import { Folder } from "lucide-react";
 import ItemList from "./ItemList";
+import Loading from "./Loading";
+import { sortResource } from "@/lib/utils";
 
 type Props = {
   type: "connection" | "knowledge_bases";
@@ -18,19 +20,27 @@ export default function RootResource({ type, id }: Props) {
   if (type === "knowledge_bases") {
     URL += `?resource_path=/`;
   }
-  const { data } = useSWR<Resource[]>(URL, fetcher);
+  const { data, isLoading } = useSWR<Resource[]>(URL, fetcher, {
+    refreshInterval: type === "knowledge_bases" ? 1000 : 10000,
+  });
 
   return (
-    <div className="flex flex-col gap-2 cursor-pointer">
+    <div className="flex flex-col w-[48rem] gap-2 cursor-pointer">
       <div className="flex gap-2 cursor-pointer">
         <Folder /> /
       </div>
       <div className="pl-2">
-        <ItemList>
-          {data?.map((resource, index) => (
-            <Item key={index} resource={resource} type={type} id={id} />
-          ))}
-        </ItemList>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <ItemList>
+            {data
+              ?.sort(sortResource)
+              .map((resource, index) => (
+                <Item key={index} resource={resource} type={type} id={id} />
+              ))}
+          </ItemList>
+        )}
       </div>
     </div>
   );
