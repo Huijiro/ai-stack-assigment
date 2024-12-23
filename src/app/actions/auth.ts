@@ -49,7 +49,6 @@ export async function createSession(email: string, password: string) {
   cookieStore.set("Authorization", `Bearer ${authToken}`, {
     path: "/",
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     maxAge: 60 * 60 * 24 * 30,
   });
