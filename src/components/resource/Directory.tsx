@@ -46,19 +46,17 @@ export default function Directory({ resource, blocked, type, id }: Props) {
       >
         <Folder /> <span className="font-bold">{displayName}</span>
       </div>
-      {open && !isLoading && (
+      {open && !isLoading && data && (
         <ItemList type={type}>
-          {data
-            ?.sort(sortResource)
-            .map((resource, index) => (
-              <Item
-                key={index}
-                resource={resource}
-                blocked={blocked}
-                type={type}
-                id={id}
-              />
-            ))}
+          {data.sort(sortResource).map((resource, index) => (
+            <Item
+              key={index}
+              resource={resource}
+              blocked={blocked}
+              type={type}
+              id={id}
+            />
+          ))}
         </ItemList>
       )}
     </div>
