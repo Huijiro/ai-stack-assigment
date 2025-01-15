@@ -43,9 +43,12 @@ export default function RootResource({ type, id }: Props) {
           <Loading />
         ) : (
           <ItemList>
-            {data.sort(sortResource).map((resource, index) => (
-              <Item key={index} resource={resource} type={type} id={id} />
-            ))}
+            {data &&
+              data
+                .sort(sortResource)
+                .map((resource, index) => (
+                  <Item key={index} resource={resource} type={type} id={id} />
+                ))}
           </ItemList>
         )}
       </div>
