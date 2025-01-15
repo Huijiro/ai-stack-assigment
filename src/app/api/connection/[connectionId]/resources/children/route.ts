@@ -46,7 +46,7 @@ export async function GET(
     return NextResponse.json({ error: response.statusText });
   }
 
-  const data = (await response.json()) as Resource[];
+  const data = (await response.json()) as { data: Resource[] };
 
-  return NextResponse.json(data);
+  return NextResponse.json(data.data);
 }

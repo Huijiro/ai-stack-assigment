@@ -20,9 +20,18 @@ export default function RootResource({ type, id }: Props) {
   if (type === "knowledge_bases") {
     URL += `?resource_path=/`;
   }
-  const { data, isLoading } = useSWR<Resource[]>(URL, fetcher, {
+  const { data, isLoading, error } = useSWR<Resource[]>(URL, fetcher, {
     refreshInterval: type === "knowledge_bases" ? 1000 : 10000,
   });
+
+  if (error) {
+    <div className="flex flex-col w-[48rem] gap-2 cursor-pointer">
+      <div className="flex gap-2 cursor-pointer">
+        <Folder /> /
+      </div>
+      <div className="pl-2">Error: {error}</div>
+    </div>;
+  }
 
   return (
     <div className="flex flex-col w-[48rem] gap-2 cursor-pointer">
@@ -34,11 +43,9 @@ export default function RootResource({ type, id }: Props) {
           <Loading />
         ) : (
           <ItemList>
-            {data
-              ?.sort(sortResource)
-              .map((resource, index) => (
-                <Item key={index} resource={resource} type={type} id={id} />
-              ))}
+            {data.sort(sortResource).map((resource, index) => (
+              <Item key={index} resource={resource} type={type} id={id} />
+            ))}
           </ItemList>
         )}
       </div>

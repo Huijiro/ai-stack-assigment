@@ -46,7 +46,7 @@ export async function GET(
     return NextResponse.json({ error: response.statusText });
   }
 
-  const data = (await response.json()) as KnowledgeBase[];
+  const data = (await response.json()) as { data: KnowledgeBase[] };
 
-  return NextResponse.json(data);
+  return NextResponse.json(data.data);
 }
